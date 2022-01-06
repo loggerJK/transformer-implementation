@@ -10,9 +10,14 @@ Vanilla Transformer NLP 모델을 구현합니다.
 
 
 # To Do
-- device 
-- Training / Loss Function
+- [Done] device configuration 
+- [Done] Training / Loss Function
+= [Done] Mask Functions
 - Positional Embedding Layer
+- [Done] Dropout
+- [Done] Dataset 제대로 동작하는지 확인
+- LayerNorm hidden_dim 의미
+
 
 # About Dataset
 
