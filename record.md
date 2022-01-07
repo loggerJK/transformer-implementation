@@ -5,8 +5,8 @@
 Xavier Uniform으로 layer들을 초기화해야해서, 모델을 선언 후 layer.weight들을 불러와서 초기화해주려는 방법을 쓰려고 했다. 그런데 특정 layer들이 제대로 불러와지지 않는 문제를 확인했다.
 
 ```python
-for layer in encoder_layer.named_parameters():
-    if 'weight' in layer
+for param in encoder_layer.named_parameters():
+    print(param[0])
 ```
 ```
 multiheadattention.fcQ.weight
@@ -72,11 +72,11 @@ LayerNorm((128,), eps=1e-05, elementwise_affine=True)
 
 ## 두번째 : named_parameters() 함수 이용하기
 
-named_parameters() 함수는 (name, parameter) 형태의 튜플을 반환한다. 
+named_parameters() 함수는 (param_name, param_weight) 형태의 튜플을 반환한다. 
 
 ```python
-for layer in encoder_layer.named_parameters():
-  print(layer[0])
+for param in encoder_layer.named_parameters():
+  print(param[0])
 ```
 ```
 multiheadattention.fcQ.weight
@@ -136,3 +136,33 @@ self.dec_layers = nn.ModuleList([DecoderLayer(hidden_dim, num_head, inner_dim) f
 ```
 
 그러면 Pytorch에서 정상적으로 layer들을 인식한다. 쓸 때는 일반적인 반복문처럼 ```for layer in self.dec_layers:``` 같이 사용하면 된다.
+
+
+# Pytorch에서 += 연산자의 위험성
+
+[참고 사이트](https://discuss.pytorch.org/t/encounter-the-runtimeerror-one-of-the-variables-needed-for-gradient-computation-has-been-modified-by-an-inplace-operation/836/4)
+
+Pytorch에서 layer를 짤 때 다음과 같은 코드는 조심해야 한다.
+
+```python
+    def forward(self, input, mask = None):
+
+        # input : (bs, seq_len, hidden_dim)
+        
+        # encoder attention
+        # uses only padding mask
+        output = self.multiheadattention(srcQ= input, srcK = input, srcV = input, mask = mask)
+        output = self.dropout1(output)
+        output += input
+        output = self.layerNorm(output)
+
+        output_ = self.ffn(output)
+        output_ = self.dropout2(output_)
+        output += output
+        output = self.layerNorm(output)
+
+        # output : (bs, seq_len, hidden_dim)
+        return output
+```
+
+왜냐? 이 ``+=`` 연산자가 바로 inplace 연산자이기 때문이다. 따라서 이를 이용해서 layer를 짜고 ``loss.backward()``를 하면 Pytorch가 ``One of the variables needed for gradient computation has been modified by an inplace operation`` 에러를 내뿜게 된다. 디버깅하기 힘드니까 조심하자.... Pytorch를 사용하면서 느끼는 건 잘 모르면 진짜 그냥 안전하게 짜는게 에러 안나고 베스트라는 것이다. 코드 길이 줄이겠다고 ``+=`` 썼다가 에러 잡느라 몇시간을 날렸다....
