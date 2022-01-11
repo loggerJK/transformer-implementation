@@ -22,9 +22,10 @@
     -   Learning Rate : 1e-4
     -   Scheduler : CosineAnnealingLR (Tmax = 100, min = 1e-5)
 
-![img](https://i.imgur.com/CFMuitM.png) {:width = '60%', height = '60%'}
 
-<img src='https://i.imgur.com/CFMuitM.png', width = 60%, height = 60%>
+<p align="center">
+<img src=https://i.imgur.com/CFMuitM.png alt=img width=80% height=80% />
+</p>
 
 
 -   Training Result
