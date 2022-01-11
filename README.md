@@ -1,48 +1,61 @@
 # transformer-implementation
-Vanilla Transformer NLP 모델을 구현합니다.
 
-[Paper : Attention is All You Need](https://arxiv.org/abs/1706.03762)
+[Vanilla Transformer NLP](https://arxiv.org/abs/1706.03762) 모델을 구현합니다.
+모델은 `Training.ipynb`에 구현되어 있습니다.
 
-- Framework : Pytorch
-- Task : EN -> KO Translation
-- Dataset : OpenSubtitle Corpus (in Korpora)
-    
+[블로그](https://loggerjk.github.io/pytorch/Transformer/)
 
 
-# To Do
-- [Done] device configuration 
-- [Done] Training / Loss Function
-= [Done] Mask Functions
-- Positional Embedding Layer
-- [Done] Dropout
-- [Done] Dataset 제대로 동작하는지 확인
-- LayerNorm hidden_dim 의미
+-   Framework : Pytorch
+-   Task : EN -> KO Translation
+-   Dataset : [korean-parallel-corpora/bible](https://github.com/jungyeul)
 
+    -   Sentencepice
+    -   Vocab Size : 10K
+    -   Train : Valid = 9 : 1
 
-# About Dataset
+-   Training
 
-## OpenSubtitle Dataset Description
-Author : TRAC (https://trac.edgewall.org/)
+    -   Encoder/Decoder : 2
+    -   hidden_dim = 256
+    -   inner_dim = 512
+    -   Epoch : 70
+    -   Learning Rate : 1e-4
+    -   Scheduler : CosineAnnealingLR (Tmax = 100, min = 1e-5)
 
-Repository : http://opus.nlpl.eu/OpenSubtitles-v2018.php
-References :
-    - P. Lison and J. Tiedemann, 2016, OpenSubtitles2016: Extracting Large Parallel Corpora
-        from Movie and TV Subtitles. In Proceedings of the 10th International Conference on
-        Language Resources and Evaluation (LREC 2016)
+![img](https://i.imgur.com/CFMuitM.png)
 
-This is a new collection of translated movie subtitles from http://www.opensubtitles.org/.
+-   Training Result
 
-[[ IMPORTANT ]]
+    -   Train_Loss : 2.64
+    -   Train accuracy : 0.203
+    -   Valid_Loss : 4.46
+    -   Valid accuracy : 0.136
 
+-   Good Example
 
-If you use the OpenSubtitle corpus: Please, add a link to http://www.opensubtitles.org/
-to your website and to your reports and publications produced with the data!
+```
+en =  " 'This is what the Sovereign LORD says: In the first month on the first day you are to take a young bull without defect and purify the sanctuary.
+answer =  "나 주 하나님이 말한다. 너는 첫째 달 초하루에는 언제나 소 떼 가운데서 흠 없는 수송아지 한 마리를 골라다가 성소를 정결하게 하여라.
+ko = ['나 주 하나님이 말한다. 그 날에는 수송아지 일곱 마리와 숫양 두 마리와 일 년 된 어린 숫양 한 마리를 흠 없는 것으로 바쳐라.']
 
-I promised this when I got the data from the providers of that website!
+en =  Solomon reigned in Jerusalem over all Israel forty years.
+answer =  솔로몬은 예루살렘에서 사십 년 동안 온 이스라엘을 다스렸다.
+ko = ['솔로몬은 예루살렘에서 마흔 해 동안 다스렸다.']
 
-This is a slightly cleaner version of the subtitle collection using improved sentence alignment
-and better language checking.
+en =  then hear from heaven their prayer and their plea, and uphold their cause.
+answer =  주께서는 하늘에서 그들의 기도와 간구를 들으시고, 그들의 사정을 살펴보아 주십시오.
+ko = ['그러나 주님은, 하늘에서 그들의 기도와 간구를 들으시고, 그들의 사정을 살펴 주십시오.']
+```
 
+-   Bad Example
 
-## License
-Open Data. Details in https://opendefinition.org/od/2.1/en/
+```
+en =  Obed-Edom also had sons: Shemaiah the firstborn, Jehozabad the second, Joah the third, Sacar the fourth, Nethanel the fifth,
+answer =  오벳에돔의 아들은, 맏아들 스마야와, 둘째 여호사밧과, 셋째 요아와, 넷째 사갈과, 다섯째 느다넬과,
+ko = ['오벳에돔과 아사의 아들 여호하난이 보수하였는데, 그 다음은 단에서부터 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔과 스바와 드라빔이다.']
+
+en =  "Go down, sit in the dust, Virgin Daughter of Babylon; sit on the ground without a throne, Daughter of the Babylonians. No more will you be called tender or delicate.
+answer =  처녀 딸 바빌론아, 내려와서 티끌에 앉아라. 딸 바빌로니아야, 보좌를 잃었으니, 땅에 주저앉아라. 너의 몸매가 유연하고 맵시가 있다고들 하였지만, 이제는 아무도 그런 말을 하지 않을 것이다.
+ko = ['"너는 바빌론 도성 바빌론 도성아, 바빌론 도성아, 바빌론 도성 안에 있는 도성 안에 있는 네 오른손에는 칼이나 쳐라. 네 오른손에는 칼이나 기근이나 기근이나 기근이나 기근이나 기근이나 기근이나 기근이나 굶은 아니다.']
+```
