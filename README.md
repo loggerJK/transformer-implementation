@@ -22,8 +22,10 @@
     -   Learning Rate : 1e-4
     -   Scheduler : CosineAnnealingLR (Tmax = 100, min = 1e-5)
 
+![img](https://i.imgur.com/CFMuitM.png) {:width = '60%', height = '60%'}
 
-![img](https://i.imgur.com/CFMuitM.png){: width='60%', height='60%'}
+<img src='https://i.imgur.com/CFMuitM.png', width = 60%, height = 60%>
+
 
 -   Training Result
     -   Train_Loss : 2.64
