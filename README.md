@@ -15,7 +15,6 @@
     -   Train : Valid = 9 : 1
 
 -   Training
-
     -   Encoder/Decoder : 2
     -   hidden_dim = 256
     -   inner_dim = 512
@@ -23,10 +22,10 @@
     -   Learning Rate : 1e-4
     -   Scheduler : CosineAnnealingLR (Tmax = 100, min = 1e-5)
 
-![img](https://i.imgur.com/CFMuitM.png)
+
+![img](https://i.imgur.com/CFMuitM.png){: width='60%', height='60%'}
 
 -   Training Result
-
     -   Train_Loss : 2.64
     -   Train accuracy : 0.203
     -   Valid_Loss : 4.46
